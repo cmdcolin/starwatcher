@@ -2,6 +2,9 @@ body {
   background-color: #282c34;
   color: white;
 }
+a {
+  color: grey
+}
 .App {
   text-align: center;
 }
@@ -10,6 +13,10 @@ body {
   display: flex;
   justify-content: center;
   font-size: 10em;
+}
+
+.StarList {
+  text-align: left;
 }
 
 

@@ -2,14 +2,21 @@
   "name": "starwatcher",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://vastholdings.us/starwatcher/build",
   "dependencies": {
+    "apollo-boost": "^0.1.23",
+    "github-api": "^3.0.0",
+    "gitstar-components": "^1.0.5",
+    "graphql": "^14.0.2",
     "react": "^16.7.0",
+    "react-apollo": "^2.3.3",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "lint": "eslint src",
     "eject": "react-scripts eject"
@@ -25,6 +32,7 @@
   ],
   "devDependencies": {
     "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-prettier": "^3.0.1"
+    "eslint-plugin-prettier": "^3.0.1",
+    "gh-pages": "^2.0.1"
   }
 }

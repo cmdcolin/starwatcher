@@ -8,28 +8,18 @@ import {
 } from "gitstar-components";
 
 const GET_REPOSITORIES = gql`
-  query($after: String) {
-    search(
-      type: REPOSITORY
-      query: "language:Javascript"
-      first: 10
-      after: $after
-    ) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
+query {
+  viewer {
+    login
+    name
+    starredRepositories(first: 100) {
       nodes {
-        ... on Repository {
-          id
-          nameWithOwner
-          url
-          descriptionHTML
-          viewerHasStarred
-        }
+        nameWithOwner,
+        id
       }
     }
   }
+}
 `;
 
 const ADD_STAR = gql`
@@ -95,30 +85,30 @@ class RepositoriesWrapper extends React.Component {
 
 export default compose(
   graphql(GET_REPOSITORIES, {
-    props: ({ data: { error, loading, search, fetchMore } }) => {
+    props: ({ data: { viewer: { starredRepositories } } }) => {
       return {
-        repositories: search ? search.nodes : null,
-        loading,
-        error,
-        loadMore: () =>
-          fetchMore({
-            variables: { after: search.pageInfo.endCursor },
-            updateQuery: (previousResult = {}, { fetchMoreResult = {} }) => {
-              const previousSearch = previousResult.search || {};
-              const currentSearch = fetchMoreResult.search || {};
-              const previousNodes = previousSearch.nodes || [];
-              const currentNodes = currentSearch.nodes || [];
-              // Specify how to merge new results with previous results
-              return {
-                ...previousResult,
-                search: {
-                  ...previousSearch,
-                  nodes: [...previousNodes, ...currentNodes],
-                  pageInfo: currentSearch.pageInfo
-                }
-              };
-            }
-          })
+        repositories: starredRepositories ? starredRepositories.nodes : null,
+        loading: false,
+        error: false,
+        loadMore: () => console.log('lol')
+          // fetchMore({
+          //   variables: { after: starredRepositories.pageInfo.endCursor },
+          //   updateQuery: (previousResult = {}, { fetchMoreResult = {} }) => {
+          //     const previousSearch = previousResult.search || {};
+          //     const currentSearch = fetchMoreResult.search || {};
+          //     const previousNodes = previousSearch.nodes || [];
+          //     const currentNodes = currentSearch.nodes || [];
+          //     // Specify how to merge new results with previous results
+          //     return {
+          //       ...previousResult,
+          //       search: {
+          //         ...previousSearch,
+          //         nodes: [...previousNodes, ...currentNodes],
+          //         pageInfo: currentSearch.pageInfo
+          //       }
+          //     };
+          //   }
+          // })
       };
     },
     options: {
